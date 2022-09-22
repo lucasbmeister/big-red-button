@@ -1,13 +1,49 @@
 
+const frases = [
+    "Errou...",
+    "Falta pouco...",
+    "Tente de novo...",
+    "Opa...",
+    "Ops...",
+    "Pensou que seria fácil..."
+]
+
+function getRandomArbitrary(min, max) {
+    return parseInt(Math.random() * (max - min) + min, 10);
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const button = document.getElementById("button");
+    const label = document.getElementById("label");
+    const audio = new Audio('ole.mp3');
+    audio.volume = 0.1
 
-    function moveButton() {
-        let randX = Math.floor(Math.random() * (window.innerWidth - 480));
-        button.animate([
-            { transform: "scale(0.8)", "left": randX + "px" },
-            { transform: "scale(1.2)", "bottom": 100 + "px" }
-        ])
+    function moveButton(event) {
+        console.log(event);
+
+        let randX = Math.floor(Math.random() * window.innerWidth);
+        let randY = Math.floor(Math.random() * window.innerHeight);
+
+        let newX = event.clientX + randX
+        let newY = event.clientY + randY
+
+        if (newX + 60 > window.innerWidth) {
+            newX = event.clientX - 120
+        }
+        if (newX < 0) {
+            newX = 0
+        }
+        if (newY + 60 > window.innerHeight) {
+            newY = event.clientY - 120
+        }
+        if (newY < 0) {
+            newY = 0
+        }
+
+        button.style.left = newX + "px"
+        button.style.top = newY + "px"
+        label.innerText = frases[getRandomArbitrary(0, frases.length)]
+        audio.play()
     };
 
     button.addEventListener('mouseenter', moveButton);
