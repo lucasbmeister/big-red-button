@@ -8,6 +8,7 @@ const frases = [
     "Pensou que seria fácil..."
 ]
 
+
 function getRandomArbitrary(min, max) {
     return parseInt(Math.random() * (max - min) + min, 10);
 }
@@ -15,8 +16,13 @@ function getRandomArbitrary(min, max) {
 document.addEventListener('DOMContentLoaded', (event) => {
     const button = document.getElementById("button");
     const label = document.getElementById("label");
-    const audio = new Audio('ole.mp3');
-    audio.volume = 0.1
+ 
+    const sounds = [
+        new Audio('ole.mp3'),
+        new Audio('faustao.mp3')
+    ]
+
+    sounds.forEach(audio => audio.volume = 0.1)
 
     function moveButton(event) {
         console.log(event);
@@ -43,7 +49,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         button.style.left = newX + "px"
         button.style.top = newY + "px"
         label.innerText = frases[getRandomArbitrary(0, frases.length)]
-        audio.play()
+        sounds[getRandomArbitrary(0, sounds.length)].play()
     };
 
     button.addEventListener('mouseenter', moveButton);
