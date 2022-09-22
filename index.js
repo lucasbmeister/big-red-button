@@ -1,6 +1,6 @@
 
 
-const button = document.getElementById("button");
+const button = document.getElementsByClassName("button");
 
 
 let count = 0;
