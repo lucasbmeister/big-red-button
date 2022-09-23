@@ -1,4 +1,4 @@
-
+//quick and dirty JS, this is just a joke
 const frases = [
     "Errou...",
     "Falta pouco...",
@@ -8,15 +8,48 @@ const frases = [
     "Pensou que seria fácil..."
 ]
 
+let cheatTimer = null
+let cheatValue = ''
+let checkBoxCheat = null
+let labelCheat = null
+
 
 function getRandomArbitrary(min, max) {
     return parseInt(Math.random() * (max - min) + min, 10);
 }
 
+function createCheckbox() {
+    checkBoxCheat = document.createElement('input')
+    checkBoxCheat.hidden = true
+    checkBoxCheat.type = 'checkbox'
+    checkBoxCheat.id = 'checkbox'
+
+
+    checkBoxCheat.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            e.target.disabled = true
+            button.replaceWith(button.cloneNode(true));
+            label.innerText = 'Chegou o momento...'
+            button.addEventListener('mouseup', () => {
+                label.innerText = 'Parabéns? Eu acho?'
+            })
+        }
+    })
+
+    labelCheat = document.createElement('label')
+    labelCheat.hidden = true
+    labelCheat.htmlFor = 'checkbox'
+    labelCheat.innerText = 'Eu sei o que estou fazendo'
+
+    document.body.appendChild(checkBoxCheat)
+    document.body.appendChild(labelCheat)
+}
+
 document.addEventListener('DOMContentLoaded', (event) => {
     const button = document.getElementById("button");
     const label = document.getElementById("label");
- 
+    const cheat = document.getElementById("cheat");
+    createCheckbox()
     const sounds = [
         new Audio('ole.mp3'),
         new Audio('faustao.mp3')
@@ -25,8 +58,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     sounds.forEach(audio => audio.volume = 0.1)
 
     function moveButton(event) {
-        console.log(event);
-
         let randX = Math.floor(Math.random() * window.innerWidth);
         let randY = Math.floor(Math.random() * window.innerHeight);
 
@@ -53,5 +84,38 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     button.addEventListener('mouseenter', moveButton);
+
+    document.addEventListener('keyup', (e) => {
+        if (!cheatTimer) {
+            cheatTimer = setTimeout(() => {
+                clearCheat()
+            }, 5000)
+        }
+
+        if (e.key === 'Backspace') {
+            clearCheat()
+            return
+        }
+
+        cheatValue += e.key   
+
+        cheat.innerText = cheatValue
+        if (cheatValue === 'deploy'.repeat(3)) {
+            toggleCheat()
+            clearCheat()
+        }
+    });
 })
+
+function clearCheat() {
+    cheat.innerText = ''
+    cheatValue = ''
+    clearTimeout(cheatTimer)
+    cheatTimer = null
+}
+
+function toggleCheat() {
+    checkBoxCheat.hidden = !checkBoxCheat.hidden
+    labelCheat.hidden = !labelCheat.hidden
+}
 
